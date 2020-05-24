@@ -1,6 +1,9 @@
 // FileManager class
 #include <iostream>
 #include <string>
+#include <vector>
+#include <dirent.h>
+#include <cassert> // TODO: Replace all asserts with GTest framework
 
 class FileManager {
   public:
@@ -16,4 +19,5 @@ class FileManager {
     void clear();
     void clear(std::string);
     void info();
+    std::vector<std::string> list_files();
 };
