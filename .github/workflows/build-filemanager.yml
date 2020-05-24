@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: cmake-build
-        run: ls -i && pwd && && mkdir build && cmake .. && make && cp *.a ../samples/
+        run: ls -i && pwd && mkdir build && cmake .. && make && cp *.a ../samples/
 
       - name: cmake-samples
         run: cd samples && mkdir build && cmake .. && make && ./main
