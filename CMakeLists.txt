@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 include_directories("include")
-add_library(cpp-file-manager src/FileManager.cpp)
+add_library(cpp-file-manager FileManager.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
