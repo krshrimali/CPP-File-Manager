@@ -1,8 +1,10 @@
 #include <iostream>
-// TODO: Add include path to CMakeLists.txt of samples/ dir
-#include "../include/FileManager.hpp"
+#include "FileManager.hpp"
 
 int main() {
-    FileManager file(std::string("Kush/"));
+    FileManager file(std::string("../../samples"));
     file.info();
+    for (auto const& i: file.list_files()) {
+        std::cout << i << std::endl;
+    }
 }

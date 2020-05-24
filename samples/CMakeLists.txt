@@ -4,10 +4,10 @@ project(cpp-file-manager-samples VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-# add_library(libcpp-file-manager)
-
+include_directories("../include")
 add_executable(main sample.cpp)
 target_link_libraries(main ${CMAKE_CURRENT_SOURCE_DIR}/libcpp-file-manager.a)
+add_definitions(-DNDEBUG)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
