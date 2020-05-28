@@ -5,6 +5,13 @@
 #include <dirent.h>
 #include <cassert> // TODO: Replace all asserts with GTest framework
 
+struct file_info {
+  std::string name ;
+  bool is_dir ;
+} ;
+
+
+
 class FileManager {
   public:
     // Fle Manager class
@@ -20,4 +27,7 @@ class FileManager {
     void clear(std::string);
     void info();
     std::vector<std::string> list_files();
+    std::vector<file_info> list_files_new() ;
+    file_info make_file_info(std::string, bool) ;
+
 };
