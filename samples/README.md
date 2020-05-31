@@ -1,5 +1,6 @@
 Sample file generated of this project:
 
+```
 |-- src
     |-- FileManager.cpp
 |-- README.md
@@ -17,3 +18,4 @@ Sample file generated of this project:
 |-- .vscode
 |-- .github
 |-- script.sh
+```
