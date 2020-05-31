@@ -22,50 +22,6 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
   return f;
 }
 
-std::vector<std::string> FileManager::list_files() {
-  // This returns the list of files present in the folder: corePath
-  // TODO: Add tests, check if corePath is not empty
-  // Converting #ifdef NDEBUG and #endif to a macro
-
-#ifdef NDEBUG
-  assert(corePath != "");
-#endif
-
-  std::vector<std::string> list_files;
-  std::string base_name;
-
-  if(*corePath.rbegin() != '/') base_name = corePath + "/";
-  else base_name = corePath;
-
-  DIR* dir;
-  struct dirent *ent;
-  if((dir = opendir(base_name.c_str())) != NULL) {
-    while((ent = readdir(dir)) != NULL) {
-#ifdef NDEBUG
-      std::cout << "Reading filename from directory: " << base_name << std::endl;
-#endif
-      std::string filename = ent->d_name;
-#ifdef NDEBUG
-      std::cout << "Filename: " << filename << "\n";
-#endif
-      list_files.push_back(base_name + ent->d_name);
-    }
-#ifdef NDEBUG
-    std::cout << "Closing dir" << std::endl;
-#endif
-    closedir(dir);
-#ifdef NDEBUG
-    std::cout << "Closed dir" << std::endl;
-#endif
-  } else {
-    std::cout << "Could not open directory " << base_name.c_str() << std::endl;
-    exit(-1);
-  }
-
-  return list_files;
-}
-
-
 std::vector<FileManager::file_info> FileManager::list_files_new() {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
@@ -114,17 +70,21 @@ std::string spaces(int s) {
   return out;
 }
 
-void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int depth) {
+void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int depth, std::vector<std::string> ignore_dirs) {
   std::vector<file_info> out_dir = f.list_files_new();
-  std::cout << "Depth is: " << depth << std::endl;
+  ++depth;
   for (auto const& iterating_entry: out_dir) {
     if (!iterating_entry.is_dir) {
       file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
     } else {
       // It's a directory
       file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
+      if (dirTobeIgnored(iterating_entry.rname, ignore_dirs)) {
+        std::cout << "Found true for: " << iterating_entry.rname << "\n";
+        continue;
+      }
       f.clear(iterating_entry.name);
-      f.writeToFileIterated(f, file, ++depth);
+      f.writeToFileIterated(f, file, depth, ignore_dirs);
     }
   }   
 }
@@ -143,7 +103,7 @@ bool FileManager::dirTobeIgnored(std::string dir_name, std::vector<std::string> 
   return false;
 }
 
-void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {"build"}) { 
+void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {}) { 
   std::vector<file_info> out = f.list_files_new();
   std::ofstream file;
   file.open("sample_out.txt");
@@ -151,8 +111,7 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
     std::cout << "Unable to open the file, please check\n";
     return;
   }
-  int index = 0;
-  int depth = 1;
+  int depth = 0;
   for (auto const& entry: out) {
     if (!entry.is_dir) {
       // entry is a file
@@ -164,29 +123,74 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
       if (dirTobeIgnored(entry.rname, ignore_dirs)) {
         std::cout << "Found true for: " << entry.rname << std::endl;
         continue;
+      } else {
+        f.clear(entry.name);
+        f.writeToFileIterated(f, file, depth, ignore_dirs);
       }
-      f.clear(entry.name); 
-      // f.writeToFileIterated(f, file, ++depth);
-      std::vector<file_info> out_dir = f.list_files_new();
-      for (auto const& iterating_entry: out_dir) {
-        if (!iterating_entry.is_dir) {
-          // it's a file
-          file << "    |-- " + iterating_entry.rname + "\n";
-        } else {
-          file << "    |-- " + iterating_entry.rname + "\n";
-          std::cout << ignore_dirs.size() << std::endl;
-          std::cout << "Checking " << iterating_entry.rname << " against build" << std::endl; 
-          if (dirTobeIgnored(iterating_entry.rname, ignore_dirs)) {
-            std::cout << "Found true for: " << iterating_entry.rname << std::endl;
-          } else {
-            f.clear(iterating_entry.name); 
-            f.writeToFileIterated(f, file, ++depth);
-          }
-        }
-      }
+      // f.clear(entry.name); 
+      // // f.writeToFileIterated(f, file, ++depth);
+      // std::vector<file_info> out_dir = f.list_files_new();
+      // for (auto const& iterating_entry: out_dir) {
+      //   if (!iterating_entry.is_dir) {
+      //     // it's a file
+      //     file << "    |-- " + iterating_entry.rname + "\n";
+      //   } else {
+      //     file << "    |-- " + iterating_entry.rname + "\n";
+      //     std::cout << ignore_dirs.size() << std::endl;
+      //     std::cout << "Checking " << iterating_entry.rname << " against build" << std::endl; 
+      //     if (dirTobeIgnored(iterating_entry.rname, ignore_dirs)) {
+      //       std::cout << "Found true for: " << iterating_entry.rname << std::endl;
+      //     } else {
+      //       f.clear(iterating_entry.name); 
+      //       f.writeToFileIterated(f, file, ++depth);
+      //     }
+      //   }
+      // }
     }
-    index += 1;
   }
   std::cout << "Done!\n";
   file.close();
+}
+
+std::vector<std::string> FileManager::list_files() {
+  // This returns the list of files present in the folder: corePath
+  // TODO: Add tests, check if corePath is not empty
+  // Converting #ifdef NDEBUG and #endif to a macro
+
+#ifdef NDEBUG
+  assert(corePath != "");
+#endif
+
+  std::vector<std::string> list_files;
+  std::string base_name;
+
+  if(*corePath.rbegin() != '/') base_name = corePath + "/";
+  else base_name = corePath;
+
+  DIR* dir;
+  struct dirent *ent;
+  if((dir = opendir(base_name.c_str())) != NULL) {
+    while((ent = readdir(dir)) != NULL) {
+#ifdef NDEBUG
+      std::cout << "Reading filename from directory: " << base_name << std::endl;
+#endif
+      std::string filename = ent->d_name;
+#ifdef NDEBUG
+      std::cout << "Filename: " << filename << "\n";
+#endif
+      list_files.push_back(base_name + ent->d_name);
+    }
+#ifdef NDEBUG
+    std::cout << "Closing dir" << std::endl;
+#endif
+    closedir(dir);
+#ifdef NDEBUG
+    std::cout << "Closed dir" << std::endl;
+#endif
+  } else {
+    std::cout << "Could not open directory " << base_name.c_str() << std::endl;
+    exit(-1);
+  }
+
+  return list_files;
 }

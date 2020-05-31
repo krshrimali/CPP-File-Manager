@@ -33,6 +33,6 @@ class FileManager {
     // TODO: pass by reference
     void writeToFile(FileManager, std::vector<std::string>);
     // TODO: pass by reference
-    void writeToFileIterated(FileManager, std::ofstream&, int);
+    void writeToFileIterated(FileManager, std::ofstream&, int, std::vector<std::string>);
     bool dirTobeIgnored(std::string, std::vector<std::string>);
 };
