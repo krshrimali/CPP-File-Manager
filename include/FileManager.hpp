@@ -4,16 +4,17 @@
 #include <vector>
 #include <dirent.h>
 #include <cassert> // TODO: Replace all asserts with GTest framework
-
-struct file_info {
-  std::string name ;
-  bool is_dir ;
-} ;
-
-
+#include <fstream>
 
 class FileManager {
   public:
+    // Use it as FileManager::file_info
+    struct file_info {
+      std::string name;
+      std::string rname;
+      bool is_dir;
+    };
+
     // Fle Manager class
     // This class will help you handle files in the given path
     std::string corePath;
@@ -27,7 +28,11 @@ class FileManager {
     void clear(std::string);
     void info();
     std::vector<std::string> list_files();
-    std::vector<file_info> list_files_new() ;
-    file_info make_file_info(std::string, bool) ;
-
+    std::vector<file_info> list_files_new();
+    file_info make_file_info(std::string, std::string, bool);
+    // TODO: pass by reference
+    void writeToFile(FileManager, std::vector<std::string>);
+    // TODO: pass by reference
+    void writeToFileIterated(FileManager, std::ofstream&, int);
+    bool dirTobeIgnored(std::string, std::vector<std::string>);
 };
