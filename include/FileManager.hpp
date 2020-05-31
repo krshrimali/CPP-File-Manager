@@ -32,6 +32,7 @@ class FileManager {
     file_info make_file_info(std::string, std::string, bool);
     // TODO: pass by reference
     void writeToFile(FileManager, std::vector<std::string>);
+  private:
     // TODO: pass by reference
     void writeToFileIterated(FileManager, std::ofstream&, int, std::vector<std::string>);
     bool dirTobeIgnored(std::string, std::vector<std::string>);
