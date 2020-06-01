@@ -7,6 +7,8 @@
 #include <fstream>
 
 class FileManager {
+  // Fle Manager class
+  // This class will help you handle files in the given path
   public:
     // Use it as FileManager::file_info
     struct file_info {
@@ -15,25 +17,21 @@ class FileManager {
       bool is_dir;
     };
 
-    // Fle Manager class
-    // This class will help you handle files in the given path
-    std::string corePath;
-
     FileManager(std::string path) {
-      // The whole class will potentially revolve around the subfolders inside the path (including the path)
+      // The whole class will potentially revolves around the subfolders inside the path (including the path)
       corePath = path;
     }
   
     void clear();
     void clear(std::string);
     void info();
-    std::vector<std::string> list_files();
-    std::vector<file_info> list_files_new();
-    file_info make_file_info(std::string, std::string, bool);
-    // TODO: pass by reference
+    std::vector<file_info> list_files();
+    // TODO: Why to pass FileManager object?
     void writeToFile(FileManager, std::vector<std::string>);
   private:
-    // TODO: pass by reference
+    std::string corePath;
+    // TODO: Why to pass FileManager object, and pass everything by reference!
     void writeToFileIterated(FileManager, std::ofstream&, int, std::vector<std::string>);
     bool dirTobeIgnored(std::string, std::vector<std::string>);
+    file_info make_file_info(std::string, std::string, bool);
 };
