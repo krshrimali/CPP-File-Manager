@@ -1,10 +1,8 @@
 #include <iostream>
 #include "FileManager.hpp"
 
-int main() {
-    FileManager file(std::string("../../samples"));
-    file.info();
-    for (auto const& i: file.list_files()) {
-        std::cout << i << std::endl;
-    }
+int main(int argc, char** argv) {
+  FileManager file(argv[1]);
+  file.info();
+  file.writeToFile(file, /*ignore_dirs=*/ {"build", ".git", ".github", ".vscode"});
 }
