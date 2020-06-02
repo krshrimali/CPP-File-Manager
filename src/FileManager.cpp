@@ -29,7 +29,7 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
   return f;
 }
 
-std::vector<FileManager::file_info> FileManager::list_files() {
+std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions = {}) {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
   // Converting #ifdef NDEBUG and #endif to a macro
@@ -47,6 +47,7 @@ std::vector<FileManager::file_info> FileManager::list_files() {
   bool is_dir;
   if((dir = opendir(base_name.c_str())) != NULL) {
     while((ent = readdir(dir)) != NULL) {
+      bool include = false;
       std::string relative_filename = ent->d_name;
       if(relative_filename == "." || relative_filename == "..") {
         continue;
@@ -56,6 +57,19 @@ std::vector<FileManager::file_info> FileManager::list_files() {
 #ifdef NDEBUG
         std::cout << filename << " is not a directory" << std::endl;
 #endif
+        // Check extension
+        std::string::size_type pos = relative_filename.find(".");
+        if (pos != std::string::npos) {
+          std::string file_extension = relative_filename.substr(pos);
+          std::cout << "extension: " << file_extension << std::endl;
+          if (itemInList(file_extension, extensions)) {
+#ifdef NDEBUG
+            std::cout << "File: " << filename << " with extension: " << file_extension << " is being ignored.\n";
+#endif
+            include = true;
+          }
+        }
+
         is_dir = false;
       }
       else {
@@ -63,8 +77,11 @@ std::vector<FileManager::file_info> FileManager::list_files() {
         std::cout << filename << " is a directory" << std::endl;
 #endif
         is_dir = true;
+        include = true;
       }
-      list_files.push_back(make_file_info(filename, relative_filename, is_dir));
+      if (include) {
+        list_files.push_back(make_file_info(filename, relative_filename, is_dir));
+      }
     }
     closedir(dir);
   } else {
@@ -91,7 +108,7 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
     } else {
       // It's a directory
       file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
-      if (dirTobeIgnored(iterating_entry.rname, ignore_dirs)) {
+      if (itemInList(iterating_entry.rname, ignore_dirs)) {
 #ifdef NDEBUG
         std::cout << "Ignoring dir: " << iterating_entry.name << "\n";
 #endif
@@ -103,16 +120,16 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
   }   
 }
 
-bool FileManager::dirTobeIgnored(std::string dir_name, std::vector<std::string> dirs_list) {
-  if (dirs_list.size() == 0) {
+bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
+  if (list.size() == 0) {
 #ifdef NDEBUG
     std::cout << "Nothing passed in ignore_dirs, returning false by default then." << std::endl;
 #endif
     return false;
   }
 
-  for(auto const& dir: dirs_list) {
-    if (dir == dir_name) {
+  for(auto const& _item: list) {
+    if (_item == item) {
       return true;
     }
   }
@@ -144,7 +161,7 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
 #ifdef NDEBUG
       std::cout << "Checking " << entry.rname << " against build" << std::endl; 
 #endif
-      if (dirTobeIgnored(entry.rname, ignore_dirs)) {
+      if (itemInList(entry.rname, ignore_dirs)) {
 #ifdef NDEBUG
         std::cout << "Ignoring dir: " << entry.name << "\n";
 #endif
