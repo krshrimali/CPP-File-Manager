@@ -25,13 +25,13 @@ class FileManager {
     void clear();
     void clear(std::string);
     void info();
-    std::vector<file_info> list_files();
+    std::vector<file_info> list_files(std::vector<std::string>);
     // TODO: Why to pass FileManager object?
     void writeToFile(FileManager, std::vector<std::string>);
   private:
     std::string corePath;
     // TODO: Why to pass FileManager object, and pass everything by reference!
     void writeToFileIterated(FileManager, std::ofstream&, int, std::vector<std::string>);
-    bool dirTobeIgnored(std::string, std::vector<std::string>);
+    bool itemInList(std::string, std::vector<std::string>);
     file_info make_file_info(std::string, std::string, bool);
 };
