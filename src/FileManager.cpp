@@ -29,7 +29,7 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
   return f;
 }
 
-std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions = {}) {
+std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions = {}, bool ignore_extensions = false) {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
   // Converting #ifdef DEBUG and #endif to a macro
@@ -58,13 +58,19 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
         std::cout << filename << " is not a directory" << std::endl;
 #endif
         // Check extension
-        std::string::size_type pos = relative_filename.find(".");
-        if (pos != std::string::npos) {
-          std::string file_extension = relative_filename.substr(pos);
-          if (itemInList(file_extension, extensions)) {
+        const char* const_relative_filename = relative_filename.c_str();
+        auto pos = std::strrchr(const_relative_filename, '.');
+        // std::string::size_type pos = relative_filename.find(".");
+        // if (pos != std::string::npos) {
+        if (pos) {
+          // std::string file_extension = relative_filename.substr(pos);
+          std::string file_extension = relative_filename.substr(pos - relative_filename.c_str());
+          if (extensions.size() == 0) include = true;
+          if (itemInList(file_extension, extensions) != ignore_extensions) {
 #ifdef DEBUG
             std::cout << "File: " << filename << " with extension: " << file_extension << " is being ignored.\n";
 #endif
+            // TODO: We can set include to ignore_extensions here
             include = true;
           }
         }
@@ -97,8 +103,8 @@ std::string spaces(int s) {
   return out;
 }
 
-void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int depth, std::vector<std::string> ignore_dirs) {
-  std::vector<file_info> out_dir = f.list_files();
+void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int depth, std::vector<std::string> ignore_dirs, std::vector<std::string> extensions_to_ignore) {
+  std::vector<file_info> out_dir = f.list_files(extensions_to_ignore, true);
   ++depth;
   for (auto const& iterating_entry: out_dir) {
     if (!iterating_entry.is_dir) {
@@ -114,7 +120,7 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
         continue;
       }
       f.clear(iterating_entry.name);
-      f.writeToFileIterated(f, file, depth, ignore_dirs);
+      f.writeToFileIterated(f, file, depth, ignore_dirs, extensions_to_ignore);
     }
   }   
 }
@@ -135,8 +141,9 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   return false;
 }
 
-void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {}) { 
-  std::vector<file_info> out = f.list_files();
+// writeToFile(file, {}, {});
+void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {}) { 
+  std::vector<file_info> out = f.list_files(ignore_extensions, true);
   if (out.size() == 0) {
 #ifdef DEBUG
     std::cout << "We got no files in the folder, enable DEBUG flag to see what happened.\n";
@@ -144,7 +151,7 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
     return;
   }
   std::ofstream file;
-  file.open("sample_out.txt");
+  file.open("tree.txt");
   if (!file.is_open()) {
     std::cout << "Unable to open the file, please check\n";
     return;
@@ -167,7 +174,7 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
         continue;
       } else {
         f.clear(entry.name);
-        f.writeToFileIterated(f, file, depth, ignore_dirs);
+        f.writeToFileIterated(f, file, depth, ignore_dirs, ignore_extensions);
       }
     }
   }
