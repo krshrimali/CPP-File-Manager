@@ -1,14 +1,14 @@
 #include "FileManager.hpp"
 
 void FileManager::clear() {
-#ifdef NDEBUG
+#ifdef DEBUG
   std::cout << "Clearing the core path\n";
 #endif
   corePath.clear();
 }
 
 void FileManager::clear(std::string newPath) {
-#ifdef NDEBUG
+#ifdef DEBUG
   std::cout << "Clearing file manager with new path " + newPath + "\n";
 #endif
   corePath = newPath;
@@ -32,14 +32,14 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
 std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions = {}) {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
-  // Converting #ifdef NDEBUG and #endif to a macro
+  // Converting #ifdef DEBUG and #endif to a macro
   
   std::vector<file_info> list_files;
   std::string base_name;
 
   if(*corePath.rbegin() != '/') base_name = corePath + "/";
   else base_name = corePath;
-#ifdef NDEBUG
+#ifdef DEBUG
   std::cout << "Listing files and dirs in: " << corePath << "\n";
 #endif
   DIR* dir;
@@ -54,16 +54,15 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
       }
       std::string filename = base_name + relative_filename;
       if(opendir(filename.c_str()) == NULL) {
-#ifdef NDEBUG
+#ifdef DEBUG
         std::cout << filename << " is not a directory" << std::endl;
 #endif
         // Check extension
         std::string::size_type pos = relative_filename.find(".");
         if (pos != std::string::npos) {
           std::string file_extension = relative_filename.substr(pos);
-          std::cout << "extension: " << file_extension << std::endl;
           if (itemInList(file_extension, extensions)) {
-#ifdef NDEBUG
+#ifdef DEBUG
             std::cout << "File: " << filename << " with extension: " << file_extension << " is being ignored.\n";
 #endif
             include = true;
@@ -73,7 +72,7 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
         is_dir = false;
       }
       else {
-#ifdef NDEBUG
+#ifdef DEBUG
         std::cout << filename << " is a directory" << std::endl;
 #endif
         is_dir = true;
@@ -109,7 +108,7 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
       // It's a directory
       file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
       if (itemInList(iterating_entry.rname, ignore_dirs)) {
-#ifdef NDEBUG
+#ifdef DEBUG
         std::cout << "Ignoring dir: " << iterating_entry.name << "\n";
 #endif
         continue;
@@ -122,7 +121,7 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
 
 bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   if (list.size() == 0) {
-#ifdef NDEBUG
+#ifdef DEBUG
     std::cout << "Nothing passed in ignore_dirs, returning false by default then." << std::endl;
 #endif
     return false;
@@ -139,8 +138,8 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
 void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {}) { 
   std::vector<file_info> out = f.list_files();
   if (out.size() == 0) {
-#ifdef NDEBUG
-    std::cout << "We got no files in the folder, enable NDEBUG flag to see what happened.\n";
+#ifdef DEBUG
+    std::cout << "We got no files in the folder, enable DEBUG flag to see what happened.\n";
 #endif
     return;
   }
@@ -158,11 +157,11 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
     } else {
       // entry is a directory
       file << "|-- " + entry.rname + "\n";
-#ifdef NDEBUG
+#ifdef DEBUG
       std::cout << "Checking " << entry.rname << " against build" << std::endl; 
 #endif
       if (itemInList(entry.rname, ignore_dirs)) {
-#ifdef NDEBUG
+#ifdef DEBUG
         std::cout << "Ignoring dir: " << entry.name << "\n";
 #endif
         continue;
@@ -172,7 +171,7 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
       }
     }
   }
-#ifdef NDEBUG
+#ifdef DEBUG
   std::cout << "Done!\n";
 #endif
   file.close();
