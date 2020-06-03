@@ -8,5 +8,5 @@ int main(int argc, char** argv) {
   for(auto const& item: out) {
     std::cout << item.name << std::endl;
   }
-  file.writeToFile(file, /*ignore_folders=*/ {".git"}, /*ignore_extensions=*/ {".txt", ".pyc"});
+  file.writeToFile(/*ignore_folders=*/ {".git"}, /*ignore_extensions=*/ {".txt", ".pyc"});
 }
