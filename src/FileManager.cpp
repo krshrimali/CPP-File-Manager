@@ -141,7 +141,7 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   return false;
 }
 
-void FileManager::writeToFile(std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions) { 
+void FileManager::writeToFile(std::vector<std::string> ignore_dirs, std::vector<std::string> ignore_extensions) { 
   std::vector<file_info> out = this->list_files(ignore_extensions, true);
   if (out.size() == 0) {
 #ifdef DEBUG
