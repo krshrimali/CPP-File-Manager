@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
-#include <cassert> // TODO: Replace all asserts with GTest framework
+#include <cassert>
 #include <fstream>
 #include <cstring>
 
@@ -26,9 +26,9 @@ class FileManager {
     void clear();
     void clear(std::string);
     void info();
-    std::vector<file_info> list_files(std::vector<std::string>, bool);
+    std::vector<file_info> list_files(std::vector<std::string> extensions = {}, bool ignore_extensions = false);
     // TODO: Why to pass FileManager object?
-    void writeToFile(FileManager, std::vector<std::string>, std::vector<std::string>);
+    void writeToFile(FileManager, std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {});
   private:
     std::string corePath;
     // TODO: Why to pass FileManager object, and pass everything by reference!
