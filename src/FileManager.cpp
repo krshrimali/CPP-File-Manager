@@ -29,7 +29,7 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
   return f;
 }
 
-std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions = {}, bool ignore_extensions = false) {
+std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions, bool ignore_extensions) {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
   // Converting #ifdef DEBUG and #endif to a macro
@@ -141,7 +141,7 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   return false;
 }
 
-void FileManager::writeToFile(std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {}) { 
+void FileManager::writeToFile(std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions) { 
   std::vector<file_info> out = this->list_files(ignore_extensions, true);
   if (out.size() == 0) {
 #ifdef DEBUG

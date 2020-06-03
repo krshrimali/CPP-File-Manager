@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
-#include <cassert> // TODO: Replace all asserts with GTest framework
+#include <cassert>
 #include <fstream>
 #include <cstring>
 
@@ -26,8 +26,8 @@ class FileManager {
     void clear();
     void clear(std::string);
     void info();
-    std::vector<file_info> list_files(std::vector<std::string>, bool);
-    void writeToFile(std::vector<std::string>, std::vector<std::string>);
+    std::vector<file_info> list_files(std::vector<std::string> extensions = {}, bool ignore_extensions = false);
+    void writeToFile(std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {});
   private:
     std::string corePath;
     void writeToFileIterated(std::ofstream&, int, std::vector<std::string>, std::vector<std::string>);
