@@ -103,8 +103,8 @@ std::string spaces(int s) {
   return out;
 }
 
-void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int depth, std::vector<std::string> ignore_dirs, std::vector<std::string> extensions_to_ignore) {
-  std::vector<file_info> out_dir = f.list_files(extensions_to_ignore, true);
+void FileManager::writeToFileIterated(std::ofstream& file, int depth, std::vector<std::string> ignore_dirs, std::vector<std::string> extensions_to_ignore) {
+  std::vector<file_info> out_dir = this->list_files(extensions_to_ignore, true);
   ++depth;
   for (auto const& iterating_entry: out_dir) {
     if (!iterating_entry.is_dir) {
@@ -119,8 +119,8 @@ void FileManager::writeToFileIterated(FileManager f, std::ofstream& file, int de
 #endif
         continue;
       }
-      f.clear(iterating_entry.name);
-      f.writeToFileIterated(f, file, depth, ignore_dirs, extensions_to_ignore);
+      this->clear(iterating_entry.name);
+      this->writeToFileIterated(file, depth, ignore_dirs, extensions_to_ignore);
     }
   }   
 }
@@ -141,9 +141,8 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   return false;
 }
 
-// writeToFile(file, {}, {});
-void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {}) { 
-  std::vector<file_info> out = f.list_files(ignore_extensions, true);
+void FileManager::writeToFile(std::vector<std::string> ignore_dirs = {}, std::vector<std::string> ignore_extensions = {}) { 
+  std::vector<file_info> out = this->list_files(ignore_extensions, true);
   if (out.size() == 0) {
 #ifdef DEBUG
     std::cout << "We got no files in the folder, enable DEBUG flag to see what happened.\n";
@@ -173,8 +172,8 @@ void FileManager::writeToFile(FileManager f, std::vector<std::string> ignore_dir
 #endif
         continue;
       } else {
-        f.clear(entry.name);
-        f.writeToFileIterated(f, file, depth, ignore_dirs, ignore_extensions);
+        this->clear(entry.name);
+        this->writeToFileIterated(file, depth, ignore_dirs, ignore_extensions);
       }
     }
   }
