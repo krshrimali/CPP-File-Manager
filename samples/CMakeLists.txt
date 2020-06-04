@@ -5,8 +5,8 @@ include(CTest)
 enable_testing()
 
 include_directories("../include")
-add_executable(main sample.cpp)
-target_link_libraries(main ${CMAKE_CURRENT_SOURCE_DIR}/libcpp-file-manager.a)
+add_executable(fmanager sample.cpp)
+target_link_libraries(fmanager ${CMAKE_CURRENT_SOURCE_DIR}/libcpp-file-manager.a)
 add_definitions(-DNDEBUG)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
