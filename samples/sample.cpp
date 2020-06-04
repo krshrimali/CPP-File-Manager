@@ -8,24 +8,24 @@ const char* program_name = "fmanager"; // Use for printing usage
 void print_usage() {
   printf("Usage: %s options\n", program_name);
   printf("  -h  --help                   Print usage.\n",
-         "  -p  --path input path        Input path (to be iterated).\n",
+         "  -p  --path filePath          Input path (to be iterated).\n",
          "  -l  --list_files             Call the list files function.\n",
          "  -t  --tree                   Call the tree function.\n");
   exit(-1);
 }
 
 int main(int argc, char** argv) {
-  const char* short_options = "hplt";
+  const char* short_options = "hp:lt";
   const struct option long_options[] = {
     { "help",       0,    NULL,   'h'},
     { "path",       1,    NULL,   'p'},
-    { "list_files", 1,    NULL,   'l'},
-    { "tree",       1,    NULL,   't'},
+    { "list_files", 0,    NULL,   'l'},
+    { "tree",       0,    NULL,   't'},
     { NULL,         0,    NULL,    0 }
   };
 
   std::string path = "";
-  bool list_files = false;
+  bool list_files = true;
   bool draw_tree = false;
   int opt;
 
@@ -36,7 +36,8 @@ int main(int argc, char** argv) {
         // Print usage information
         print_usage();
       case 'p': /* -p or --path */
-        path = optarg;
+	std::cout << "Got path: " << optarg << std::endl;
+	path = optarg;
         break;
       case 'l': /* -l or --list_files */
         list_files = true;
@@ -50,17 +51,18 @@ int main(int argc, char** argv) {
   } while(opt != -1); 
 
   if (path == "") {
-    path = "../../samples";
+    // By default use the current folder as the path
+    path = ".";
   }
   
   FileManager file(path);
-  file.info(); // Prints the path you entered to the console
+  // file.info(); // Prints the path you entered to the console
   if (list_files) {
-    for (auto const& i: file.list_files()) {
-      std::cout << i << std::endl;
+    for (auto const& item: file.list_files()) {
+      std::cout << item.name << std::endl;
     }
   }
   if (draw_tree) {
-    file.writeToFile(/*ignore_dirs=*/ {}, /*ignore_extensions=*/ {});
+    file.writeToFile(/*ignore_folders=*/ {}, /*ignore_extensions=*/ {});
   }
 }
