@@ -27,4 +27,4 @@ jobs:
         run: mkdir build && cd build && cmake .. && make && cp *.a ../samples/
 
       - name: cmake-samples
-        run: cd samples && mkdir build && cd build && cmake .. && make && ./fmanager -p ../../ -t && cat tree.txt
+        run: cd samples && mkdir build && cd build && cmake .. && make && ./fmanager -p ../../ -t -d .git,build -e .pyc && cat tree.txt
