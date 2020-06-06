@@ -12,9 +12,9 @@ The C++ File Manager provides the following functions to users:
 4. `list_files(std::vector<std::string> extensions, bool ignore_extensions)` - Lists the files and directories in corePath. The first argument is *extensions* which is a vector of file extensions to be ignored. These extensions are ignored only when the second argument i.e. `ignore_extensions` is set to `true`.
 5. `writeToFile(std::vector<string> ignore_dirs, std::vector<std::string> ignore_extension)` - Writes the tree structure for the files and directories in corePath into a `.txt` file. This functions iterates till the innermost files of all the directories. The first argument `ignore_dirs` contains a vector of directories to be ignored in the tree structures. Similarly, the second argument `ignore_extensions` contains a vector of files extensions to be ignored in the final tree structure.
 
-# Usage 
+## Usage 
 
-## Using Binary
+### Using Binary
 
 The **fmanager** binary has the following options :
 
@@ -27,9 +27,9 @@ The **fmanager** binary has the following options :
   -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
 ```
 
-### Listing files in a directory    
+**Listing files in a directory**
 
-**Command:** `fmanager -p samples`
+Command: `fmanager -p samples`
 
 By default, it will list files in the given directory (here `samples`). Output will look like this:
 
@@ -42,7 +42,7 @@ CMakeLists.txt
 FileManager.hpp
 ```
 
-### Building tree of the given directory and ignoring directories and extensions
+**Building tree of the given directory and ignoring directories and extensions**
 
 `./fmanager -p ./ -t -d include,.git -e .cpp`\
 _OR_ \
@@ -79,7 +79,7 @@ The `tree.txt` file stores the following directory structure:
 |-- include
 ```
 
-## Using the library in your C++ Code
+### Using the library in your C++ Code
 
 To be able to use `FileManager` library, head over to the latest release and download `.a` (library file) and `.hpp` (header file). Copy these files in your current folder (or wherever you desire, just remember the path). To compile, use:
 
@@ -129,7 +129,7 @@ std::vector<std::string> ignore_extensions = {".pyc", ".swp"};
 file.writeToFile(/*ignore_folders=*/ ignore_dirs, /*ignore_extensions=*/ ignore_extensions);
 ```
 
-# Build
+## Build
 
 The current release (1.0) only supports GNU/Linux Systems. Please head to the relevant opened issues to see the progress on Windows and MacOS. Use the following steps to build from source:
 
