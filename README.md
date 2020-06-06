@@ -9,7 +9,7 @@ The C++ File Manager provides the following functions to users:
 1. `clear()` - Clears the memory allocated to corePath.
 2. `clear(std::string new_path)` - Assigns a new path to the corePath variable.
 3. `info()` - Prints the corePath assigned to the FileManager object to the console.
-4. `list_files(std::vector<std::string> extensions, bool ignore_extensions)` - Lists the files and directories in corePath. The first argument is *extensions* which is a vector of file extensions to be ignored. These extensions are ignored only when the second argument i.e. `ignore_extensions` is set to **True**.
+4. `list_files(std::vector<std::string> extensions, bool ignore_extensions)` - Lists the files and directories in corePath. The first argument is *extensions* which is a vector of file extensions to be ignored. These extensions are ignored only when the second argument i.e. `ignore_extensions` is set to `true`.
 5. `writeToFile(std::vector<string> ignore_dirs, std::vector<std::string> ignore_extension)` - Writes the tree structure for the files and directories in corePath into a `.txt` file. This functions iterates till the innermost files of all the directories. The first argument `ignore_dirs` contains a vector of directories to be ignored in the tree structures. Similarly, the second argument `ignore_extensions` contains a vector of files extensions to be ignored in the final tree structure.
 
 # Usage 
