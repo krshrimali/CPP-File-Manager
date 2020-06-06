@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
   // file.info(); // Prints the path you entered to the console
   if (list_files) {
     for (auto const& item: file.list_files()) {
-      std::cout << item.name << std::endl;
+      std::cout << item.rname << std::endl;
     }
   }
   if (draw_tree) {
