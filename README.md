@@ -2,7 +2,7 @@
 
 # CPP-File-Manager
 
-C++ File Manager allows you to list files in C++, ignore extensions (or just list specified extensions) and write the whole directory structure into a fancy tree-like structure which can be integrated in Markdown files. This is the first release. Please file issues with [FEATURE REQUEST] in the title, and we'll be happy to take a look at it.
+C++ File Manager allows you to list files in C++, ignore extensions (or just list specified extensions) and write the whole directory structure into a fancy tree-like structure which can be integrated in Markdown files. This is the first release. Please file issues with `[FEATURE REQUEST]` in the title, and we'll be happy to take a look at it.
 
 The C++ File Manager provides the following functions to users:
 
