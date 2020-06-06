@@ -1,4 +1,13 @@
-Sample file generated of this project:
+## Usage
+
+This directory contains sample file on using the `FileManager`. Follow these steps:
+
+```bash
+mkdir build/ && cd build
+cmake .. && make && ./fmanager -h
+```
+
+**Tree file generated of this project**
 
 ```
 |-- README.md
