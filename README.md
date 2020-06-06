@@ -25,7 +25,7 @@ The **fmanager** binary has the following options :
   -t  --tree                        Call the tree function. 
   -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree 
   -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
-  ```
+```
 
 ### Listing files in a directory    
 
@@ -79,7 +79,7 @@ The `tree.txt` file stores the following directory structure:
 |-- include
 ```
 
-## Using the library in your C+++ Code
+## Using the library in your C++ Code
 
 To be able to use `FileManager` library, head over to the latest release and download `.a` (library file) and `.hpp` (header file). Copy these files in your current folder (or wherever you desire, just remember the path). To compile, use:
 
