@@ -14,7 +14,7 @@ The C++ File Manager provides the following functions to users:
 
 # Usage 
 
-## Binary
+## Using Binary
 
 The **fmanager** binary has the following options :
 
@@ -128,3 +128,15 @@ std::vector<std::string> ignore_dirs = {".git", ".github", ".vscode", "build"};
 std::vector<std::string> ignore_extensions = {".pyc", ".swp"};
 file.writeToFile(/*ignore_folders=*/ ignore_dirs, /*ignore_extensions=*/ ignore_extensions);
 ```
+
+# Build
+
+The current release (1.0) only supports GNU/Linux Systems. Please head to the relevant opened issues to see the progress on Windows and MacOS. Use the following steps to build from source:
+
+```bash
+git clone https://github.com/BuffetCodes/CPP-File-Manager.git && cd CPP-File-Manager
+mkdir build && cd build
+cmake .. && make
+```
+
+The library file: `libcpp-file-manager.a` will be generated in `build/` directory. Copy the header file in `include/` and library file from `build/` directory to your folder to use it. Or, just head over to the `samples` folder in this project on how to compile using `CMake` or `g++`.
