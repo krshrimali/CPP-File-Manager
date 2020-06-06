@@ -81,7 +81,13 @@ The `tree.txt` file stores the following directory structure:
 
 ## Using the library in your C+++ Code
 
-`CPP-File-Manager` can be used in your C++ program as follows:
+To be able to use `FileManager` library, head over to the latest release and download `.a` (library file) and `.hpp` (header file). Copy these files in your current folder (or wherever you desire, just remember the path). To compile, use:
+
+```bash
+g++ filename.cpp -L . -lcpp-file-manager -o out
+```
+
+Here are a few steps on using the library in your code:
 
 1. Create an object of `Filemanager` Class and initialize it with a path:
 
@@ -95,6 +101,7 @@ FileManager file(path);
 for (auto const& item: file.list_files()) {
     // Use item.rname if you want "just" the name of the file or folder
     // item.name returns absolute path (with respect to the path given)
+    // item.is_dir returns true if it's a directory, else false
     std::cout << item.name << "\n";
 }
 ```
