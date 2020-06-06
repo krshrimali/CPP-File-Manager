@@ -25,11 +25,11 @@ The **fmanager** binary has the following options :
   -t  --tree                        Call the tree function. 
   -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree 
   -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
-  ```
+```
 
 ### Listing files in a directory    
 
-Command: `fmanager -p samples`
+**Command:** `fmanager -p samples`
 
 By default, it will list files in the given directory (here `samples`). Output will look like this:
 
@@ -79,7 +79,7 @@ The `tree.txt` file stores the following directory structure:
 |-- include
 ```
 
-## Using the library in your C+++ Code
+## Using the library in your C++ Code
 
 To be able to use `FileManager` library, head over to the latest release and download `.a` (library file) and `.hpp` (header file). Copy these files in your current folder (or wherever you desire, just remember the path). To compile, use:
 
@@ -89,15 +89,17 @@ g++ filename.cpp -L . -lcpp-file-manager -o out
 
 Here are a few steps on using the library in your code:
 
-1. Create an object of `Filemanager` Class and initialize it with a path:
+1. Create an object of `Filemanager` class and initialize it with a path:
 
 ``` 
+std::string path = "/home/BuffetCodes/Documents/CPP-File-Manager"; // Change this with your path, either relative or absolute
 FileManager file(path);
 ```
 
-2. The `file.list_files()` fucntion returns a vector containing names of files/directories with additional information. We can iterate through it as follows:
+2. The `file.list_files()` function returns a vector containing names of files/directories with additional information. We can iterate through it as follows:
 
 ```cpp
+// The type returned is a struct, head over to the header file for more details on it
 for (auto const& item: file.list_files()) {
     // Use item.rname if you want "just" the name of the file or folder
     // item.name returns absolute path (with respect to the path given)
