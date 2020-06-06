@@ -2,25 +2,20 @@
 
 # CPP-File-Manager
 
-CPP-File-Manager is an easy to use Open-Source C++ library for listing files and directories at a particular location. 
+The C++ File Manager provides the following functions to users:
 
-It consists of the following functions :
-
-__1. Clear()__ - Clears the memory allocated to corePath.__
-
-__2. Clear(string *new_path*)__ - Assigns a new path to the corePath variable.
-
-__3. Info( )__ - Prints the corePath assigned to the FileManager object to the console.__
-
-__4. list_files(vector<string> extensions, bool ignore_extensions)__ - Lists the files and directories in corePath. The first argument is *extensions* which is a vector of file extensions to be ignored. These extensions are ignored only when the second argument i.e. *ignore_extensions* is set to **True**.
-
-__5. writeToFile(vector<string> ignore_dirs, vector<string> ignore_extension)__ - Writes the tree structure for the files and directories in corePath into a __.txt__ file. This functions iterates till the innermost files of all the directories. The first argument *ignore_dirs* contains a vector of directories to be ignored in the tree structures. Similarly, the second argument *ignore_extensions* contains a vector of files extensions to be ignored in the final tree structure.
+1. `clear()` - Clears the memory allocated to corePath.
+2. `clear(std::string new_path)` - Assigns a new path to the corePath variable.
+3. `info()` - Prints the corePath assigned to the FileManager object to the console.
+4. `list_files(std::vector<std::string> extensions, bool ignore_extensions)` - Lists the files and directories in corePath. The first argument is *extensions* which is a vector of file extensions to be ignored. These extensions are ignored only when the second argument i.e. `ignore_extensions` is set to **True**.
+5. `writeToFile(std::vector<string> ignore_dirs, std::vector<std::string> ignore_extension)` - Writes the tree structure for the files and directories in corePath into a `.txt` file. This functions iterates till the innermost files of all the directories. The first argument `ignore_dirs` contains a vector of directories to be ignored in the tree structures. Similarly, the second argument `ignore_extensions` contains a vector of files extensions to be ignored in the final tree structure.
 
 # Usage 
 
 ## Binary
 
 The **fmanager** binary has the following options :
+
 ```
   -h  --help                        Print usage. 
   -p  --path filePath               Input path (to be iterated). 
@@ -30,33 +25,39 @@ The **fmanager** binary has the following options :
   -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
   ```
 
-### 1. Listing files in a directory:    
-` fmanager -p ./samples `
+### 1. Listing files in a directory    
 
-``` 
-Got path: ./samples/ 
-./samples/libcpp-file-manager.a 
-./samples/CMakeLists.txt
-./samples/sample.cpp
-./samples/README.md
-./samples/FileManager.hpp
+Command: `fmanager -p samples`
+
+By default, it will list files in the given directory (here `samples`). Output will look like this:
+
+```bash
+Got path: samples
+sample.cpp
+README.md
+libcpp-file-manager.a
+CMakeLists.txt
+FileManager.hpp
 ```
-### 2. Building tree of directory structure and ignoring directories and extensions:    
-` ./fmanager -p ./ -t -d include,.git -e .cpp`\
+
+### 2. Building tree of the given directory and ignoring directories and extensions
+
+`./fmanager -p ./ -t -d include,.git -e .cpp`\
 _OR_ \
 `./fmanager --path ./ --tree --ignore_dirs include,.git --ignore_extensions .cpp`
 
 ``` 
 Got path: ./
-./tree.txt
-./CMakeLists.txt
-./samples
-./src
-./.github
-./README.md
-./.git
-./include
+tree.txt
+CMakeLists.txt
+samples
+src
+.github
+README.md
+.git
+include
 ```
+
 The `tree.txt` file stores the following directory structure:
 
 ```
@@ -76,9 +77,9 @@ The `tree.txt` file stores the following directory structure:
 |-- include
 ```
 
-## CPP code
+## Using the library in your C+++ Code
 
-### CPP-File-Manager can be used inside a C++ program as follows:
+`CPP-File-Manager` can be used in your C++ program as follows:
 
 1. Create an object of `Filemanager` Class and initialize it with a path:
 
@@ -88,12 +89,15 @@ FileManager file(path);
 
 2. The `file.list_files()` fucntion returns a vector containing names of files/directories with additional information. We can iterate through it as follows:
 
-``` 
+```cpp
 for (auto const& item: file.list_files()) {
-      std::cout << item.name << std::endl;
-    }
+    // Use item.rname if you want "just" the name of the file or folder
+    // item.name returns absolute path (with respect to the path given)
+    std::cout << item.name << "\n";
+}
 ```
-The output generated is as follows:
+
+The output will be as follows:
 
 ```
 ./tree.txt
@@ -106,8 +110,10 @@ The output generated is as follows:
 ./include
 ```
 
-3. The `file.writeToFile()` creates a text file `tree.txt` representing the directory structure: 
+3. The `file.writeToFile()` call, creates a text file `tree.txt` representing the directory structure: 
 
-```
+```cpp
+std::vector<std::string> ignore_dirs = {".git", ".github", ".vscode", "build"};
+std::vector<std::string> ignore_extensions = {".pyc", ".swp"};
 file.writeToFile(/*ignore_folders=*/ ignore_dirs, /*ignore_extensions=*/ ignore_extensions);
 ```
