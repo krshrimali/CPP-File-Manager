@@ -27,7 +27,7 @@ The **fmanager** binary has the following options :
   -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
   ```
 
-### 1. Listing files in a directory    
+### Listing files in a directory    
 
 Command: `fmanager -p samples`
 
@@ -42,7 +42,7 @@ CMakeLists.txt
 FileManager.hpp
 ```
 
-### 2. Building tree of the given directory and ignoring directories and extensions
+### Building tree of the given directory and ignoring directories and extensions
 
 `./fmanager -p ./ -t -d include,.git -e .cpp`\
 _OR_ \
