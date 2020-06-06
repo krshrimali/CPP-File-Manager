@@ -1,4 +1,4 @@
-![CI](https://github.com/HimanshuSinghGH/CPP-File-Manager/workflows/CI/badge.svg)
+![CI](https://github.com/BuffetCodes/CPP-File-Manager/workflows/CI/badge.svg)
 
 # CPP-File-Manager
 
