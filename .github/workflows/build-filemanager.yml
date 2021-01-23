@@ -23,6 +23,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: setup-system
+        run: sudo apt-get install libboost-all-dev
+
       - name: cmake-build
         run: mkdir build && cd build && cmake .. && make && cp *.a ../samples/
 
