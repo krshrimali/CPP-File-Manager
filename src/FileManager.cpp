@@ -1,16 +1,16 @@
 #include "FileManager.hpp"
 
 void FileManager::clear() {
-#ifdef DEBUG
-  std::cout << "Clearing the core path\n";
-#endif
+
+  debugln("Clearing the core path");
+
   corePath.clear();
 }
 
 void FileManager::clear(std::string newPath) {
-#ifdef DEBUG
-  std::cout << "Clearing file manager with new path " + newPath + "\n";
-#endif
+
+  debugln("Clearing file manager with new path", newPath);
+
   corePath = newPath;
 }
 
@@ -32,16 +32,15 @@ FileManager::file_info FileManager::make_file_info(std::string filename, std::st
 std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::string> extensions, bool ignore_extensions) {
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
-  // Converting #ifdef DEBUG and #endif to a macro
   
   std::vector<file_info> list_files;
   std::string base_name;
 
   if(*corePath.rbegin() != '/') base_name = corePath + "/";
   else base_name = corePath;
-#ifdef DEBUG
-  std::cout << "Listing files and dirs in: " << corePath << "\n";
-#endif
+
+  debugln("Listing files and dirs in:", corePath);
+
   DIR* dir;
   struct dirent *ent;
   bool is_dir;
@@ -54,9 +53,9 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
       }
       std::string filename = base_name + relative_filename;
       if(opendir(filename.c_str()) == NULL) {
-#ifdef DEBUG
-        std::cout << filename << " is not a directory" << std::endl;
-#endif
+
+        debugln(filename, "is not a directory");
+
         // Check extension
         const char* const_relative_filename = relative_filename.c_str();
         auto pos = std::strrchr(const_relative_filename, '.');
@@ -67,9 +66,9 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
           std::string file_extension = relative_filename.substr(pos - relative_filename.c_str());
           if (extensions.size() == 0) include = true;
           if (itemInList(file_extension, extensions) != ignore_extensions) {
-#ifdef DEBUG
-            std::cout << "File: " << filename << " with extension: " << file_extension << " is being ignored.\n";
-#endif
+
+            debugln("File:", filename, "with extension:",file_extension,"is being ignored.");
+
             // TODO: We can set include to ignore_extensions here
             include = true;
           }
@@ -78,9 +77,9 @@ std::vector<FileManager::file_info> FileManager::list_files(std::vector<std::str
         is_dir = false;
       }
       else {
-#ifdef DEBUG
-        std::cout << filename << " is a directory" << std::endl;
-#endif
+
+        debugln(filename, "is a directory");
+
         is_dir = true;
         include = true;
       }
@@ -114,9 +113,9 @@ void FileManager::writeToFileIterated(std::ofstream& file, int depth, std::vecto
       // It's a directory
       file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
       if (itemInList(iterating_entry.rname, ignore_dirs)) {
-#ifdef DEBUG
-        std::cout << "Ignoring dir: " << iterating_entry.name << "\n";
-#endif
+
+        debugln("Ignoring dir:", iterating_entry.name);
+
         continue;
       }
       this->clear(iterating_entry.name);
@@ -127,9 +126,9 @@ void FileManager::writeToFileIterated(std::ofstream& file, int depth, std::vecto
 
 bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
   if (list.size() == 0) {
-#ifdef DEBUG
-    std::cout << "Nothing passed in ignore_dirs, returning false by default then." << std::endl;
-#endif
+
+    debugln("Nothing passed in ignore_dirs, returning false by default then.");
+
     return false;
   }
 
@@ -144,9 +143,9 @@ bool FileManager::itemInList(std::string item, std::vector<std::string> list) {
 void FileManager::writeToFile(std::vector<std::string> ignore_dirs, std::vector<std::string> ignore_extensions) { 
   std::vector<file_info> out = this->list_files(ignore_extensions, true);
   if (out.size() == 0) {
-#ifdef DEBUG
-    std::cout << "We got no files in the folder, enable DEBUG flag to see what happened.\n";
-#endif
+
+    debugln("We got no files in the folder, enable DEBUG flag to see what happened.");
+
     return;
   }
   std::ofstream file;
@@ -163,13 +162,13 @@ void FileManager::writeToFile(std::vector<std::string> ignore_dirs, std::vector<
     } else {
       // entry is a directory
       file << "|-- " + entry.rname + "\n";
-#ifdef DEBUG
-      std::cout << "Checking " << entry.rname << " against build" << std::endl; 
-#endif
+
+      debugln("Checking",entry.rname,"against build"); 
+
       if (itemInList(entry.rname, ignore_dirs)) {
-#ifdef DEBUG
-        std::cout << "Ignoring dir: " << entry.name << "\n";
-#endif
+
+        debugln("Ignoring dir:", entry.name);
+
         continue;
       } else {
         this->clear(entry.name);
@@ -177,8 +176,31 @@ void FileManager::writeToFile(std::vector<std::string> ignore_dirs, std::vector<
       }
     }
   }
-#ifdef DEBUG
-  std::cout << "Done!\n";
-#endif
+  debugln("Done!");
   file.close();
+}
+
+
+// Variadic Debug Function without new line at the end
+void debug() {
+    return;
+}
+template <typename T, typename... Types>
+void debug(T var1, Types... var2) {
+#ifdef DEBUG
+    std::cout << var1 << " " ;
+    debug(var2...) ;
+#endif
+}
+
+// Variadic Debug Function with new line at the end
+void debugln() {
+    std::cout<<"\n";
+}
+template <typename T, typename... Types>
+void debugln(T var1, Types... var2) {
+#ifdef DEBUG
+    std::cout << var1 << " " ;
+    debugln(var2...) ;
+#endif
 }

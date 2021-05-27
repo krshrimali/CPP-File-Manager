@@ -63,3 +63,13 @@ class FileManager {
     bool itemInList(std::string, std::vector<std::string>);
     file_info make_file_info(std::string, std::string, bool);
 };
+
+// Variadic Debug Function with no new line at the end
+void debug();
+template <typename T, typename... Types>
+void debug(T var1, Types... var2);
+
+// Variadic Debug Function with new line at the end
+void debugln();
+template <typename T, typename... Types>
+void debugln(T var1, Types... var2);
