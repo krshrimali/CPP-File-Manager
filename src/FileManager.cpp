@@ -188,19 +188,19 @@ void debug() {
 template <typename T, typename... Types>
 void debug(T var1, Types... var2) {
 #ifdef DEBUG
-    std::cout << var1 << " " ;
-    debug(var2...) ;
+    std::cout << var1 << " ";
+    debug(var2...);
 #endif
 }
 
 // Variadic Debug Function with new line at the end
 void debugln() {
-    std::cout<<"\n";
+    std::cout<< "\n";
 }
 template <typename T, typename... Types>
 void debugln(T var1, Types... var2) {
 #ifdef DEBUG
-    std::cout << var1 << " " ;
-    debugln(var2...) ;
+    std::cout << var1 << " ";
+    debugln(var2...);
 #endif
 }
