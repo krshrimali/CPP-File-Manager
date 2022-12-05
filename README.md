@@ -19,12 +19,13 @@ The C++ File Manager provides the following functions to users:
 The **fmanager** binary has the following options :
 
 ```
-  -h  --help                        Print usage. 
-  -p  --path filePath               Input path (to be iterated). 
-  -l  --list_files                  Call the list files function. 
-  -t  --tree                        Call the tree function. 
-  -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree 
-  -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree 
+  -h  --help                        Print usage.
+  -p  --path filePath               Input path (to be iterated).
+  -l  --list_files                  Call the list files function.
+  -t  --tree                        Call the tree function.
+  -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree
+  -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree
+  -s --separator                    Separator you want for your tree output
 ```
 
 **Listing files in a directory**
@@ -77,6 +78,21 @@ The `tree.txt` file stores the following directory structure:
 |-- README.md
 |-- .git
 |-- include
+```
+
+In case you want to change the separator from default (`|--`) to something like `-` or `*`, do:
+
+```bash
+./fmanager -s '-' -t
+./fmanager --separator '-' --tree
+```
+
+The generated `tree.txt` will now contain `-` instead of `|--`:
+
+```
+- tree.txt
+- CMakeLists.txt
+...
 ```
 
 ### Using the library in your C++ Code
