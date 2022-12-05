@@ -33,15 +33,15 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
 }
 
 int main(int argc, char **argv) {
-  const char *short_options = "hps:ltd:e:";
-  const struct option long_options[] = {{"help", 0, NULL, 'h'},
-                                        {"path", 1, NULL, 'p'},
-                                        {"separator", 1, NULL, 's'},
-                                        {"list_files", 0, NULL, 'l'},
-                                        {"tree", 0, NULL, 't'},
-                                        {"ignore_dirs", 1, NULL, 'd'},
-                                        {"ignore_extensions", 1, NULL, 'e'},
-                                        {NULL, 0, NULL, 0}};
+  const char *short_options = "hp:s:ltd:e:";
+  const struct option long_options[] = {{"help", 0, nullptr, 'h'},
+                                        {"path", 1, nullptr, 'p'},
+                                        {"separator", 1, nullptr, 's'},
+                                        {"list_files", 0, nullptr, 'l'},
+                                        {"tree", 0, nullptr, 't'},
+                                        {"ignore_dirs", 1, nullptr, 'd'},
+                                        {"ignore_extensions", 1, nullptr, 'e'},
+                                        {nullptr, 0, nullptr, 0}};
 
   std::string path = "";
   std::string separator = "";
@@ -59,7 +59,6 @@ int main(int argc, char **argv) {
       print_usage();
       break;
     case 'p': /* -p or --path */
-      std::cout << "Got path: " << optarg << std::endl;
       path = optarg;
       break;
     case 'l': /* -l or --list_files */
