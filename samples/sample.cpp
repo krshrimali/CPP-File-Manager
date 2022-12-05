@@ -7,14 +7,15 @@ const char *program_name = "fmanager"; // Use for printing usage
 
 void print_usage() {
   printf("Usage: %s options\n", program_name);
-  printf(
-      "  -h  --help                        Print usage.\n"
-      "  -p  --path filePath               Input path (to be iterated).\n"
-      "  -l  --list_files                  Call the list files function.\n"
-      "  -t  --tree                        Call the tree function.\n"
-      "  -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree\n"
-      "  -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree\n"
-      "  -s --separator                    Separator you want for your tree output\n"
+  printf("  -h  --help                        Print usage.\n"
+         "  -p  --path filePath               Input path (to be iterated).\n"
+         "  -l  --list_files                  Call the list files function.\n"
+         "  -t  --tree                        Call the tree function.\n"
+         "  -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree\n"
+         "  -e --ignore_extensions ext1,ext2  Ignore extensions while creating "
+         "tree\n"
+         "  -s --separator                    Separator you want for your tree "
+         "output\n");
   exit(-1);
 }
 

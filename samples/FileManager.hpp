@@ -85,7 +85,7 @@ private:
   // see the definitions
 
   std::string corePath;
-  std::string separator = "*";
+  std::string separator = "|--";
   void writeToFileIterated(std::ofstream &, int, std::vector<std::string>,
                            std::vector<std::string>);
   bool itemInList(std::string, std::vector<std::string>);
