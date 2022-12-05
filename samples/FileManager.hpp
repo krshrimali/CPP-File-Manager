@@ -78,6 +78,7 @@ public:
 
   void set_separator(const std::string &);
   std::string get_separator();
+  bool exists(const std::string &path);
 
 private:
   // These are the private methods, documentation will be added later. (TODO)
@@ -91,4 +92,5 @@ private:
   bool itemInList(std::string, std::vector<std::string>);
   file_info make_file_info(std::string, std::string, bool);
   void __print_all();
+  bool __check_path_if_exists(const std::string &);
 };

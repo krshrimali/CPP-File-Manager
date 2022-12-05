@@ -28,8 +28,13 @@ void FileManager::info() {
   __print_all();
 }
 
-FileManager::file_info
-FileManager::make_file_info(std::string filename, std::string relative_filename,
+bool FileManager::exists(const std::string &path) { return __check_path_if_exists(path); }
+
+bool FileManager::__check_path_if_exists(const std::string &path) {
+  return opendir(path.c_str()) != nullptr;
+}
+
+FileManager::file_info FileManager::make_file_info(std::string filename, std::string relative_filename,
                             bool is_dir) {
   // f.name is the absolute name
   // f.rname is name of the folder/file
@@ -47,7 +52,6 @@ FileManager::list_files(std::vector<std::string> extensions,
   // This returns the list of files present in the folder: corePath
   // TODO: Add tests, check if corePath is not empty
   // Converting #ifdef DEBUG and #endif to a macro
-
   std::vector<file_info> list_files;
   std::string base_name;
 
@@ -61,7 +65,8 @@ FileManager::list_files(std::vector<std::string> extensions,
   DIR *dir;
   struct dirent *ent;
   bool is_dir;
-  if ((dir = opendir(base_name.c_str())) != NULL) {
+  if (exists(base_name)) {
+    dir = opendir(base_name.c_str());
     while ((ent = readdir(dir)) != NULL) {
       bool include = false;
       std::string relative_filename = ent->d_name;
@@ -211,10 +216,8 @@ void FileManager::writeToFile(std::vector<std::string> ignore_dirs,
   file.close();
 }
 
-void FileManager::set_separator(const std::string& new_separator) {
+void FileManager::set_separator(const std::string &new_separator) {
   this->separator = new_separator;
 }
 
-std::string FileManager::get_separator() {
-  return this->separator;
-}
+std::string FileManager::get_separator() { return this->separator; }
