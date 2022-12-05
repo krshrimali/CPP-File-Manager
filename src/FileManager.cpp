@@ -131,10 +131,10 @@ void FileManager::writeToFileIterated(
   for (auto const &iterating_entry : out_dir) {
     if (!iterating_entry.is_dir) {
       // it's a file
-      file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
+      file << spaces(depth) + separator + " " + iterating_entry.rname + "\n";
     } else {
       // It's a directory
-      file << spaces(depth) + "|-- " + iterating_entry.rname + "\n";
+      file << spaces(depth) + separator + " " + iterating_entry.rname + "\n";
       if (itemInList(iterating_entry.rname, ignore_dirs)) {
 #ifdef DEBUG
         std::cout << "Ignoring dir: " << iterating_entry.name << "\n";
