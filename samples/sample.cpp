@@ -13,10 +13,8 @@ void print_usage() {
       "  -l  --list_files                  Call the list files function.\n"
       "  -t  --tree                        Call the tree function.\n"
       "  -d --ignore_dirs dir1,dir2        Ignore dirs while creating tree\n"
-      "  -e --ignore_extensions ext1,ext2  Ignore extensions while creating\n"
-      "tree\n"
-      "  -s --separator                    Separator you want for your tree "
-      "output\n");
+      "  -e --ignore_extensions ext1,ext2  Ignore extensions while creating tree\n"
+      "  -s --separator                    Separator you want for your tree output\n"
   exit(-1);
 }
 
@@ -102,6 +100,6 @@ int main(int argc, char **argv) {
   }
   if (draw_tree) {
     file->writeToFile(/*ignore_folders=*/ignore_dirs,
-                     /*ignore_extensions=*/ignore_extensions);
+                      /*ignore_extensions=*/ignore_extensions);
   }
 }
