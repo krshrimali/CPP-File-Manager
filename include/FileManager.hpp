@@ -2,10 +2,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <dirent.h>
-#include <cassert>
 #include <fstream>
-#include <cstring>
+#include<iterator>
+#include<boost/filesystem.hpp>
 
 class FileManager {
   // FileManager Class
@@ -31,8 +30,11 @@ class FileManager {
     // You can change the path using: <FileManagerObject>.clear(string newPath)
     FileManager(std::string path) {
       this->corePath = path;
+      if(!boost::filesystem::exists(path)){
+        std::cout << "Enter a valid path\n";
+        exit(1);
+      }
     }
-
     // This will clear the corePath string variable.
     void clear();
     // This will change the corePath string variable to new path.
@@ -63,3 +65,5 @@ class FileManager {
     bool itemInList(std::string, std::vector<std::string>);
     file_info make_file_info(std::string, std::string, bool);
 };
+
+

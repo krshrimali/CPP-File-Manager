@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/FileManager.hpp
+iostream
+-
+string
+-
+vector
+-
+fstream
+-
+iterator
+-
+boost/filesystem.hpp
+-
+
+/home/sparx07/BuffetCodes/CPP-File-Manager/src/FileManager.cpp
+FileManager.hpp
+/home/sparx07/BuffetCodes/CPP-File-Manager/src/FileManager.hpp
+
